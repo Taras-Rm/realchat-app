@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    platform: linux/arm64
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=chat1235
+      - MYSQL_DATABASE=chat
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=chat1235
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    volumes:
+      - my-data:/var/lib/mysql
+
+volumes:
+  my-data:

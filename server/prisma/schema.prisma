@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  nameColor String  @map("name_color")
+  isAdmin   Boolean @default(false) @map("is_admin")
+  isMute    Boolean @default(false) @map("is_mute")
+  isBan     Boolean @default(false) @map("is_ban")
+  password  String
+
+  messages Message[]
+
+  @@map("users")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
