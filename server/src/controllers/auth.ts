@@ -4,6 +4,7 @@ import * as bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { getCustomColor } from "../constants/colors";
+import config from "../config/config";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -28,7 +29,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
         isAdmin = true;
       }
 
-      const hashedPassword = await bcrypt.hash(password, 5);
+      const hashedPassword = await bcrypt.hash(password, config.password.salt);
 
       user = await prisma.user.create({
         data: {
@@ -50,7 +51,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    const token = generateAccessToken(user.id);
+    const token = generateAccessToken(
+      user.id,
+      config.token.secret,
+      config.token.expirationTime
+    );
 
     res.status(200).send({ token });
   } catch (error) {
@@ -58,8 +63,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-function generateAccessToken(id: number) {
-  return jwt.sign({ id }, "secret", { expiresIn: "24h" });
+function generateAccessToken(id: number, secret: string, etl: string) {
+  return jwt.sign({ id }, secret, { expiresIn: etl });
 }
 
 export { login };
