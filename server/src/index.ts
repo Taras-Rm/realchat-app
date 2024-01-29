@@ -2,10 +2,13 @@ import express, { Response } from "express";
 import { router as apiRouter } from "./routes";
 import cors from "cors";
 import config from "./config/config";
+import { PrismaClient } from "@prisma/client";
+import { errorHandler } from "./middlewares/errorHandlerMiddleware";
+
+export const prisma = new PrismaClient();
 
 const app = express();
 
-// Run server
 async function runServer() {
   // Parse json body
   app.use(express.json());
@@ -20,6 +23,8 @@ async function runServer() {
     res.status(200).json({ message: "pong" });
   });
 
+  app.use(errorHandler);
+
   const port = config.server.port;
 
   // Listen port
@@ -28,4 +33,11 @@ async function runServer() {
   });
 }
 
-runServer();
+runServer()
+  .then(async () => {
+    await prisma.$connect();
+  })
+  .catch(async (e) => {
+    await prisma.$disconnect();
+    process.exit(1);
+  });
