@@ -6,7 +6,8 @@ module.exports = {
       colors: {
         baseBlue: "#1d4ed8",
         baseBlueLight: "#3b82f6",
-        baseGrey: "#a3a3a3",
+        baseGrey: "#e4e4e7",
+        baseGreyDark: "#71717a",
         baseWhite: "#ffffff",
       },
     },
