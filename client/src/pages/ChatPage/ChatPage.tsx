@@ -13,7 +13,10 @@ const user: UserType = {
 };
 
 const socket = io("http://localhost:3001", {
-  auth: { token: "Test" },
+  auth: {
+    token:
+      "",
+  },
 });
 
 function ChatPage() {

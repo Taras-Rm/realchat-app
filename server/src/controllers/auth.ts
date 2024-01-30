@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "..";
 import * as bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { User } from "@prisma/client";
 import { getCustomColor } from "../constants/colors";
 import config from "../config/config";
+import { generateAccessToken } from "../utils/auth";
+import users from "../services/users";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,33 +13,27 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     let user: User | null;
 
     // Find user
-    user = await prisma.user.findUnique({
-      where: {
-        name,
-      },
-    });
+    user = await users.findUserByName(name);
 
     // If not exists with such name -> Register new user
     if (!user) {
       let isAdmin = false;
 
       // First user will be admin
-      const countOfUsers = await prisma.user.count();
+      const countOfUsers = await users.getUsersCount();
       if (countOfUsers === 0) {
         isAdmin = true;
       }
 
       const hashedPassword = await bcrypt.hash(password, config.password.salt);
 
-      user = await prisma.user.create({
-        data: {
-          name,
-          nameColor: getCustomColor(),
-          isAdmin,
-          isBan: false,
-          isMute: false,
-          password: hashedPassword,
-        },
+      user = await users.createUser({
+        name,
+        nameColor: getCustomColor(),
+        isAdmin,
+        isBan: false,
+        isMute: false,
+        password: hashedPassword,
       });
     }
 
@@ -62,9 +56,5 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
-
-function generateAccessToken(id: number, secret: string, etl: string) {
-  return jwt.sign({ id }, secret, { expiresIn: etl });
-}
 
 export { login };
