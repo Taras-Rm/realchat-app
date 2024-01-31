@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { ApiErrorType } from "../models/apiError";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../pages/routes";
 
 interface LoginResponse {
   token: string;
@@ -8,6 +10,7 @@ interface LoginResponse {
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const login = async (name: string, password: string) => {
     setIsLoading(true);
@@ -29,7 +32,7 @@ export const useLogin = () => {
       const res = json as LoginResponse;
 
       localStorage.setItem("token", res.token);
-
+      navigate(routes.chatPage);
       setIsLoading(false);
       setError(null);
     }

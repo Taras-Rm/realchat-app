@@ -1,6 +1,6 @@
 export const usersMessages = {
   ON_GET_USER: "getUser",
-  ON_GET_ALL_USER: "getUsers",
+  ON_GET_ALL_USER: "getAllUsers",
 
   EMIT_USER: "user",
   EMIT_ALL_USERS: "allUsers",

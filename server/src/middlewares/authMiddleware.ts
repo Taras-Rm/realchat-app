@@ -19,6 +19,7 @@ export const authMiddleware = (
     socket.data.userId = userId;
     next();
   } catch (error) {
+    socket.emit("error", "dsdcs")
     console.log("Something went wromg: ", error);
     socket.disconnect();
   }

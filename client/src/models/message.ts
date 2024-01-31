@@ -5,8 +5,9 @@ export type MessageType = {
   content: string;
   createdAt: string;
   userId: number;
+  user: UserType;
 };
 
 export type ChatMessageType = MessageType & {
-  user: UserType;
+  currentUser: boolean;
 };

@@ -23,7 +23,7 @@ function ChatUsers({ users, currentUser }: ChatUsers) {
       </div>
       <div className="space-y-2 h-full overflow-y-auto">
         {users.map((user) => (
-          <ChatUser user={user} isOnline={false} />
+          <ChatUser key={user.id} user={user} isOnline={false} />
         ))}
       </div>
     </div>

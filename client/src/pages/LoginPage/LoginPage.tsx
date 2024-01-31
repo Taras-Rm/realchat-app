@@ -7,7 +7,6 @@ function LoginPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     await login(loginFields.name, loginFields.password);
   };
 
