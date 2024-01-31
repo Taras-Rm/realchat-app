@@ -30,4 +30,26 @@ const createUser = async (user: CreateUserType) => {
   });
 };
 
-export default { findUserByName, getUsersCount, createUser };
+const findUserById = async (id: number): Promise<User | null> => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return user;
+};
+
+const getAllUsers = async (): Promise<User[] | null> => {
+  const users = await prisma.user.findMany();
+
+  return users;
+};
+
+export default {
+  findUserByName,
+  getUsersCount,
+  createUser,
+  findUserById,
+  getAllUsers,
+};

@@ -1,7 +1,12 @@
 import { prisma } from "..";
 
 const getAllMessages = async () => {
-  return await prisma.message.findMany();
+  return await prisma.message.findMany({
+    include: { user: true },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
 };
 
 export type CreateMessageType = {
@@ -13,6 +18,9 @@ export type CreateMessageType = {
 const createMessage = async (message: CreateMessageType) => {
   return await prisma.message.create({
     data: message,
+    include: {
+      user: true,
+    },
   });
 };
 

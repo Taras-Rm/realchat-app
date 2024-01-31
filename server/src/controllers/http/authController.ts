@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
 import { User } from "@prisma/client";
-import { getCustomColor } from "../constants/colors";
-import config from "../config/config";
-import { generateAccessToken } from "../utils/auth";
-import users from "../services/users";
+import { getCustomColor } from "../../constants/colors";
+import config from "../../config/config";
+import usersService from "../../services/users";
+import token from "../../services/token";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -13,21 +13,21 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     let user: User | null;
 
     // Find user
-    user = await users.findUserByName(name);
+    user = await usersService.findUserByName(name);
 
     // If not exists with such name -> Register new user
     if (!user) {
       let isAdmin = false;
 
       // First user will be admin
-      const countOfUsers = await users.getUsersCount();
+      const countOfUsers = await usersService.getUsersCount();
       if (countOfUsers === 0) {
         isAdmin = true;
       }
 
       const hashedPassword = await bcrypt.hash(password, config.password.salt);
 
-      user = await users.createUser({
+      user = await usersService.createUser({
         name,
         nameColor: getCustomColor(),
         isAdmin,
@@ -45,13 +45,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
-    const token = generateAccessToken(
+    const createToken = token.generateAccessToken(
       user.id,
       config.token.secret,
       config.token.expirationTime
     );
 
-    res.status(200).send({ token });
+    res.status(200).send({ token: createToken });
   } catch (error) {
     next(error);
   }

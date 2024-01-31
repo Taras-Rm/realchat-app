@@ -1,9 +1,13 @@
 import { Socket } from "socket.io";
+import { DefaultEventsMap } from "socket.io/dist/typed-events";
 
 export interface CustomSocket extends Socket {
   userId: number;
 }
 
-export interface ListenEvents {}
-export interface ServerEvents {}
-export interface InterEvents {}
+export type MySocket = Socket<
+  DefaultEventsMap,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  CustomSocket
+>;
