@@ -1,6 +1,6 @@
 import ChatMessage from "../../../components/ChatMessage";
 import { ChatMessageType } from "../../../models/message";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ChatMessagesProps {
   messages: ChatMessageType[];
@@ -15,9 +15,18 @@ function ChatMessages({ messages, sendMessage }: ChatMessagesProps) {
     sendMessage(message);
   };
 
+  const columnRef = useRef<HTMLDivElement | null>(null);
+
+  // scroll to the bottom
+  useEffect(() => {
+    if (columnRef.current) {
+      columnRef.current.scrollTop = columnRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div className="w-2/3 p-3 bg-baseGrey flex flex-col justify-end">
-      <div className="h-full overflow-y-auto">
+      <div ref={columnRef} className="h-full overflow-y-auto">
         {messages.map((msg, i) => (
           <ChatMessage key={msg.id} message={msg} isOwn={msg.currentUser} />
         ))}
