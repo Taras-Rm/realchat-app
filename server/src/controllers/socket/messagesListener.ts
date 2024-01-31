@@ -13,13 +13,12 @@ export class MessagesListener {
 
   sendMessage = async (msg: string) => {
     const now = new Date();
-    const createdMessage = await messages.createMessage({
+    const message = await messages.createMessage({
       createdAt: now,
       userId: this.socket.data.userId,
       content: msg,
     });
-    console.log(msg);
-    this.socket.nsp.emit(messagesMessages.EMIT_MESSAGE, createdMessage);
+    this.socket.nsp.emit(messagesMessages.EMIT_MESSAGE, message);
   };
 
   getMessages = async () => {

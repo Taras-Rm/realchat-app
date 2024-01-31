@@ -12,8 +12,8 @@ export class UsersListener {
     this.socket.emit(usersMessages.EMIT_USER, user);
   };
 
-  getAllUsers = async () => {
-    const allUsers = await users.getAllUsers();
-    this.socket.emit(usersMessages.EMIT_ALL_USERS, allUsers);
+  getConnectedUsers = async (usersIds: number[]) => {
+    const connectedUsers = await users.findUsersByIds(usersIds);
+    return connectedUsers;
   };
 }

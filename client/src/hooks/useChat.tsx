@@ -27,9 +27,10 @@ export const useChat = (token: string) => {
       setCurrentUser(user);
     });
 
-    // get users
-    socketRef.current.emit("getAllUsers");
-    socketRef.current.on("allUsers", (users) => {
+    // get connected users
+    socketRef.current.emit("getConnectedUsers");
+    socketRef.current.on("connectedUsers", (users) => {
+      console.log(users);
       setUsers(users);
     });
 
@@ -44,11 +45,14 @@ export const useChat = (token: string) => {
       });
       setMessages(newMessages);
     });
-
+    
     // get message
-    socketRef.current.on("message", (message) => {
-      console.log(message);
-      setMessages([...messages, message]);
+    socketRef.current.on("message", (message: MessageType) => {
+      const newMessage: ChatMessageType = {
+        ...message,
+        currentUser: currentUser.id === message.userId,
+      };
+      setMessages((state) => [...state, newMessage]);
     });
 
     return () => {

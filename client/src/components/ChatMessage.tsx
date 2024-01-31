@@ -1,4 +1,5 @@
 import { ChatMessageType } from "../models/message";
+import { prepareDate } from "../utils/prepareDate";
 const avatar = require("./../assets/avatar.png");
 
 interface ChatMessageProps {
@@ -29,7 +30,9 @@ function ChatMessage({ message, isOwn }: ChatMessageProps) {
         >
           {message.content}
         </div>
-        <div className="text-sm text-baseGreyDark">{message.createdAt}</div>
+        <div className="text-sm text-baseGreyDark">
+          {prepareDate(message.createdAt)}
+        </div>
       </div>
     </div>
   );

@@ -40,6 +40,18 @@ const findUserById = async (id: number): Promise<User | null> => {
   return user;
 };
 
+const findUsersByIds = async (ids: number[]): Promise<User[] | null> => {
+  const users = await prisma.user.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+
+  return users;
+};
+
 const getAllUsers = async (): Promise<User[] | null> => {
   const users = await prisma.user.findMany();
 
@@ -52,4 +64,5 @@ export default {
   createUser,
   findUserById,
   getAllUsers,
+  findUsersByIds
 };
