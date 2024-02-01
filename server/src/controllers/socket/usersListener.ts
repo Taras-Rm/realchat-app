@@ -14,7 +14,7 @@ export class UsersListener {
     this.socket.emit(usersMessages.EMIT_USER, user);
   };
 
-  getUsers = async (usersIds?: number[]) => {
+  getUsers = (usersIds?: number[]) => async () => {
     let dbUsers: User[] | null = [];
     if (usersIds) {
       dbUsers = await users.findUsersByIds(usersIds);

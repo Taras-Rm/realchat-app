@@ -52,9 +52,10 @@ export const useChat = (token: string | null) => {
       });
     });
 
+
     // get connected users
+    socketRef.current.emit("getConnectedUsers");
     socketRef.current.on("connectedUsers", (users) => {
-      console.log(users);
       setUsers(users);
     });
 
@@ -65,7 +66,7 @@ export const useChat = (token: string | null) => {
 
     // on receiving any error
     socketRef.current.on("error", (error) => {
-      console.log(error)
+      console.log(error);
     });
 
     return () => {

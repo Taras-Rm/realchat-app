@@ -1,6 +1,7 @@
 import { ActiveUserSocketType, MySocket } from "../../types/socket";
 import {
   messagesMessages,
+  usersMessages,
 } from "../../constants/socketMessages";
 import { UsersListener } from "./usersListener";
 import { MessagesListener } from "./messagesListener";
@@ -24,7 +25,7 @@ const socket = async (socket: MySocket) => {
     if (userSocket.user.userId === user.userId) {
       const socketForDisconnect = socket.nsp.sockets.get(userSocket.socketId);
       socketForDisconnect?.disconnect(true);
-      usersListener.getUsers(getActiveUsersIds());
+      usersListener.getUsers(getActiveUsersIds())();
     }
   }
 
@@ -34,7 +35,10 @@ const socket = async (socket: MySocket) => {
   usersListener.getUser();
 
   // get users (if admin get all, alse get only connected)
-  usersListener.getUsers(getActiveUsersIds());
+  socket.on(
+    usersMessages.ON_GET_CONNECTED_USERS,
+    usersListener.getUsers(getActiveUsersIds())
+  );
 
   // send message
   socket.on(messagesMessages.ON_SEND_MESSAGE, messagesListener.sendMessage);
@@ -47,7 +51,7 @@ const socket = async (socket: MySocket) => {
       (u) => u.user.userId !== user.userId
     );
 
-    usersListener.getUsers(getActiveUsersIds());
+    usersListener.getUsers(getActiveUsersIds())();
 
     console.log("User is disconnected");
   });

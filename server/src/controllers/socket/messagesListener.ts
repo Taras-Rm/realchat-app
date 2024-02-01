@@ -20,7 +20,7 @@ export class MessagesListener {
     const message = await messages.createMessage({
       createdAt: new Date(),
       userId: this.socket.data.user.userId,
-      content: msg,
+      content: preapredMsg,
     });
     this.socket.nsp.emit(messagesMessages.EMIT_MESSAGE, message);
   };
