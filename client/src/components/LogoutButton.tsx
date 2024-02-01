@@ -1,6 +1,10 @@
-function LogoutButton() {
+interface LogoutButtonProps {
+  handleClick: () => void
+}
+
+function LogoutButton({handleClick}: LogoutButtonProps) {
   return (
-    <button type="button" className="text-baseGreyDark">
+    <button type="button" className="text-baseGreyDark" onClick={handleClick}>
       <svg
         className="w-4 h-4"
         aria-hidden="true"

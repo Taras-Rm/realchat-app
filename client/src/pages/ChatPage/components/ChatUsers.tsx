@@ -8,13 +8,14 @@ const avatar = require("../../../assets/avatar.png");
 interface ChatUsers {
   users: UserDetailsType[];
   currentUser: UserType;
+  leaveChat: () => void;
 }
 
-function ChatUsers({ users, currentUser }: ChatUsers) {
+function ChatUsers({ users, currentUser, leaveChat }: ChatUsers) {
   return (
     <div className="flex flex-col w-1/3 p-3 pr-0 space-y-3">
       <div className="flex justify-end">
-        <LogoutButton />
+        <LogoutButton handleClick={leaveChat} />
       </div>
       <div className="flex flex-col items-center">
         <img src={avatar} className="w-16" alt="avatar" />

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { routes } from "../pages/routes";
 
 export const useChat = (token: string) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { value: currentUser, setValue: setCurrentUser } = useLocalStorage(
     "user",
     null
@@ -45,7 +45,7 @@ export const useChat = (token: string) => {
       });
       setMessages(newMessages);
     });
-    
+
     // get message
     socketRef.current.on("message", (message: MessageType) => {
       const newMessage: ChatMessageType = {
@@ -56,7 +56,7 @@ export const useChat = (token: string) => {
     });
 
     socketRef.current.on("disconnect", () => {
-      navigate(routes.loginPage)
+      navigate(routes.loginPage);
     });
 
     return () => {
@@ -69,7 +69,13 @@ export const useChat = (token: string) => {
     socketRef.current?.emit("sendMessage", message);
   };
 
-  return { currentUser, messages, sendMessage, users };
+  const leaveChat = () => {
+    socketRef.current?.disconnect();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+
+  return { currentUser, messages, sendMessage, users, leaveChat };
 };
 
 export default useChat;
