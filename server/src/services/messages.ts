@@ -1,12 +1,16 @@
 import { prisma } from "..";
 
-const getAllMessages = async () => {
-  return await prisma.message.findMany({
+const getMessages = async () => {
+  const messages = await prisma.message.findMany({
     include: { user: true },
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
+    take: 20,
   });
+  // sort by date
+  messages.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+  return messages
 };
 
 export type CreateMessageType = {
@@ -24,4 +28,4 @@ const createMessage = async (message: CreateMessageType) => {
   });
 };
 
-export default { getAllMessages, createMessage };
+export default { getMessages, createMessage };

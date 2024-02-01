@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { ChatMessageType, MessageType } from "../models/message";
-import { UserType } from "../models/user";
+import { UserDetailsType, UserType } from "../models/user";
 import useLocalStorage from "./useLocalStorage";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../pages/routes";
 
 export const useChat = (token: string) => {
+  const navigate = useNavigate()
   const { value: currentUser, setValue: setCurrentUser } = useLocalStorage(
     "user",
     null
   );
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [users, setUsers] = useState<UserDetailsType[]>([]);
 
   let socketRef = useRef<Socket | null>(null);
 
@@ -22,20 +25,17 @@ export const useChat = (token: string) => {
     });
 
     // get user
-    socketRef.current.emit("getUser");
     socketRef.current.on("user", (user: UserType) => {
       setCurrentUser(user);
     });
 
     // get connected users
-    socketRef.current.emit("getConnectedUsers");
     socketRef.current.on("connectedUsers", (users) => {
       console.log(users);
       setUsers(users);
     });
 
     // get messages
-    socketRef.current.emit("getMessages");
     socketRef.current.on("messages", (messages: MessageType[]) => {
       const newMessages: ChatMessageType[] = messages.map((msg) => {
         return {
@@ -53,6 +53,10 @@ export const useChat = (token: string) => {
         currentUser: currentUser.id === message.userId,
       };
       setMessages((state) => [...state, newMessage]);
+    });
+
+    socketRef.current.on("disconnect", () => {
+      navigate(routes.loginPage)
     });
 
     return () => {

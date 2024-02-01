@@ -1,8 +1,4 @@
-import users from "../../services/users";
-import {
-  messagesMessages,
-  usersMessages,
-} from "../../constants/socketMessages";
+import { messagesMessages } from "../../constants/socketMessages";
 import { MySocket } from "../../types/socket";
 import messages from "../../services/messages";
 
@@ -22,7 +18,7 @@ export class MessagesListener {
   };
 
   getMessages = async () => {
-    const lastMessages = await messages.getAllMessages();
+    const lastMessages = await messages.getMessages();
     this.socket.emit(messagesMessages.EMIT_MESSAGES, lastMessages);
   };
 }

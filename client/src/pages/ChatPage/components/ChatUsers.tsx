@@ -1,12 +1,12 @@
 import ChatUser from "../../../components/ChatUser";
 import Label from "../../../components/Label";
 import LogoutButton from "../../../components/LogoutButton";
-import { UserType } from "../../../models/user";
+import { UserDetailsType, UserType } from "../../../models/user";
 
 const avatar = require("../../../assets/avatar.png");
 
 interface ChatUsers {
-  users: UserType[];
+  users: UserDetailsType[];
   currentUser: UserType;
 }
 
@@ -23,7 +23,7 @@ function ChatUsers({ users, currentUser }: ChatUsers) {
       </div>
       <div className="space-y-2 h-full overflow-y-auto">
         {users.map((user) => (
-          <ChatUser key={user.id} user={user} isOnline={false} />
+          <ChatUser key={user.id} user={user} isOnline={user.isOnline} />
         ))}
       </div>
     </div>

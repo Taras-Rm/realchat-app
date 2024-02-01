@@ -12,3 +12,8 @@ export type MySocket = Socket<
   DefaultEventsMap,
   CustomSocket
 >;
+
+export type ActiveUserSocketType = {
+  user: ActiveUserType;
+  socketId: string;
+};

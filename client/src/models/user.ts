@@ -6,3 +6,7 @@ export type UserType = {
   isMute: boolean;
   isBan: boolean;
 };
+
+export type UserDetailsType = UserType & {
+  isOnline: boolean;
+};

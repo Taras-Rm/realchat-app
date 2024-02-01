@@ -1,47 +1,53 @@
-import { MySocket } from "../../types/socket";
+import { ActiveUserSocketType, MySocket } from "../../types/socket";
 import {
   messagesMessages,
-  usersMessages,
 } from "../../constants/socketMessages";
 import { UsersListener } from "./usersListener";
 import { MessagesListener } from "./messagesListener";
-import users from "../../services/users";
-import { ActiveUserType } from "../../types/user";
 
-let activeUsers: ActiveUserType[] = [];
+let activeUsersSockets: ActiveUserSocketType[] = [];
+
+const getActiveUsersIds = () => {
+  return activeUsersSockets.map((aS) => aS.user.userId);
+};
 
 const socket = async (socket: MySocket) => {
   console.log("User is connected");
-
   const user = socket.data.user;
-
-  activeUsers.push(user);
 
   const usersListener = new UsersListener(socket);
   const messagesListener = new MessagesListener(socket);
 
+  // disconnect if already connected user login
+  for (let i = 0; i < activeUsersSockets.length; i++) {
+    const userSocket = activeUsersSockets[i];
+    if (userSocket.user.userId === user.userId) {
+      const socketForDisconnect = socket.nsp.sockets.get(userSocket.socketId);
+      socketForDisconnect?.disconnect(true);
+      usersListener.getUsers(getActiveUsersIds());
+    }
+  }
+
+  activeUsersSockets.push({ user, socketId: socket.id });
+
   // get user
-  socket.on(usersMessages.ON_GET_USER, usersListener.getUser);
+  usersListener.getUser();
 
   // get users (if admin get all, alse get only connected)
-  const connectedUsers = await users.findUsersByIds(
-    activeUsers.map((u) => u.userId)
-  );
-  socket.nsp.emit(usersMessages.EMIT_CONNECTED_USERS, connectedUsers);
+  usersListener.getUsers(getActiveUsersIds());
 
   // send message
   socket.on(messagesMessages.ON_SEND_MESSAGE, messagesListener.sendMessage);
 
   // get messages
-  socket.on(messagesMessages.ON_GET_MESSAGES, messagesListener.getMessages);
+  messagesListener.getMessages();
 
   socket.on("disconnect", async () => {
-    activeUsers = activeUsers.filter((u) => u.userId !== user.userId);
-
-    const connectedUsers = await users.findUsersByIds(
-      activeUsers.map((u) => u.userId)
+    activeUsersSockets = activeUsersSockets.filter(
+      (u) => u.user.userId !== user.userId
     );
-    socket.nsp.emit(usersMessages.EMIT_CONNECTED_USERS, connectedUsers);
+
+    usersListener.getUsers(getActiveUsersIds());
 
     console.log("User is disconnected");
   });
