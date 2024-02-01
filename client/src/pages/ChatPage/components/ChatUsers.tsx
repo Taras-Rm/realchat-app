@@ -9,9 +9,10 @@ interface ChatUsers {
   users: UserDetailsType[];
   currentUser: UserType;
   leaveChat: () => void;
+  muteUser: (userId: number) => void
 }
 
-function ChatUsers({ users, currentUser, leaveChat }: ChatUsers) {
+function ChatUsers({ users, currentUser, leaveChat, muteUser }: ChatUsers) {
   return (
     <div className="flex flex-col w-1/3 p-3 pr-0 space-y-3">
       <div className="flex justify-end">
@@ -26,7 +27,13 @@ function ChatUsers({ users, currentUser, leaveChat }: ChatUsers) {
       </div>
       <div className="space-y-2 h-full overflow-y-auto">
         {users.map((user) => (
-          <ChatUser key={user.id} user={user} isOnline={user.isOnline} />
+          <ChatUser
+            key={user.id}
+            user={user}
+            isOnline={user.isOnline}
+            allowToManage={currentUser.isAdmin && user.id !== currentUser.id}
+            muteUser={muteUser}
+          />
         ))}
       </div>
     </div>

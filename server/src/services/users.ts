@@ -58,11 +58,28 @@ const getAllUsers = async (): Promise<User[] | null> => {
   return users;
 };
 
+const muteUnmuteUser = async (
+  userId: number,
+  isMute: boolean
+): Promise<User | null> => {
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      isMute,
+    },
+  });
+
+  return user;
+};
+
 export default {
   findUserByName,
   getUsersCount,
   createUser,
   findUserById,
   getAllUsers,
-  findUsersByIds
+  findUsersByIds,
+  muteUnmuteUser,
 };

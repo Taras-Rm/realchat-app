@@ -3,22 +3,26 @@ import ChatUsers from "./components/ChatUsers";
 import useChat from "../../hooks/useChat";
 
 function ChatPage() {
-  const { currentUser, messages, sendMessage, users, leaveChat } = useChat(
-    localStorage.getItem("token")
-  );
+  const { currentUser, messages, sendMessage, users, leaveChat, muteUser } =
+    useChat(localStorage.getItem("token"));
 
   return (
     <div className="h-screen">
-      <div className="flex flex-row h-full p-5">
-        <ChatMessages messages={messages} sendMessage={sendMessage} />
-        {currentUser && (
+      {currentUser && (
+        <div className="flex flex-row h-full p-5">
+          <ChatMessages
+            messages={messages}
+            sendMessage={sendMessage}
+            currentUser={currentUser}
+          />
           <ChatUsers
             users={users}
             currentUser={currentUser}
             leaveChat={leaveChat}
+            muteUser={muteUser}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

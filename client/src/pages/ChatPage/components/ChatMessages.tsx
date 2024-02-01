@@ -1,14 +1,20 @@
 import ChatMessage from "../../../components/ChatMessage";
 import { ChatMessageType } from "../../../models/message";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { UserType } from "../../../models/user";
 
 const MAX_MESSAGE_LENGTH = 200;
 interface ChatMessagesProps {
   messages: ChatMessageType[];
   sendMessage: (message: string) => void;
+  currentUser: UserType;
 }
 
-function ChatMessages({ messages, sendMessage }: ChatMessagesProps) {
+function ChatMessages({
+  messages,
+  sendMessage,
+  currentUser,
+}: ChatMessagesProps) {
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
@@ -42,7 +48,10 @@ function ChatMessages({ messages, sendMessage }: ChatMessagesProps) {
           placeholder="Type a message..."
           value={message}
         />
-        <button className="bg-baseBlueLight text-baseWhite w-1/5 text-sm rounded-full px-2 py-1">
+        <button
+          disabled={currentUser.isMute}
+          className="bg-baseBlueLight text-baseWhite w-1/5 text-sm rounded-full px-2 py-1"
+        >
           Send
         </button>
       </form>

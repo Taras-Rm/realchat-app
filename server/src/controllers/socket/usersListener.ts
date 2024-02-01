@@ -3,6 +3,7 @@ import { usersMessages } from "../../constants/socketMessages";
 import { MySocket } from "../../types/socket";
 import { User } from "@prisma/client";
 import { UserDetailsType } from "../../types/user";
+import { getSocketIdByUserId } from ".";
 
 export class UsersListener {
   constructor(private socket: MySocket) {
@@ -33,5 +34,18 @@ export class UsersListener {
     }
 
     this.socket.nsp.emit(usersMessages.EMIT_CONNECTED_USERS, processedUsers);
+  };
+
+  muteUser = async (userId: number) => {
+    const user = await users.muteUnmuteUser(userId, true);
+
+    const socketId = getSocketIdByUserId(userId);
+
+    this.socket.nsp.emit(usersMessages.EMIT_USER_MUTED, userId);
+
+    if (socketId) {
+      const socket = this.socket.nsp.sockets.get(socketId);
+      socket?.emit(usersMessages.EMIT_USER, user);
+    }
   };
 }

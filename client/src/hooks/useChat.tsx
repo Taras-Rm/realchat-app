@@ -36,7 +36,7 @@ export const useChat = (token: string | null) => {
         const newMessages: ChatMessageType[] = messages.map((msg) => {
           return {
             ...msg,
-            currentUser: user.id === msg.userId,
+            currentUser: currentUser?.id === msg.userId,
           };
         });
         setMessages(newMessages);
@@ -46,12 +46,23 @@ export const useChat = (token: string | null) => {
       socketRef.current?.on("message", (message: MessageType) => {
         const newMessage: ChatMessageType = {
           ...message,
-          currentUser: user.id === message.userId,
+          currentUser: currentUser?.id === message.userId,
         };
         setMessages((state) => [...state, newMessage]);
       });
     });
 
+    // on muted user
+    socketRef.current?.on("userMuted", (userId: number) => {
+      setUsers((users) => {
+        return users.map((u) => {
+          if (u.id === userId) {
+            return { ...u, isMute: true };
+          }
+          return u;
+        });
+      });
+    });
 
     // get connected users
     socketRef.current.emit("getConnectedUsers");
@@ -80,12 +91,16 @@ export const useChat = (token: string | null) => {
     socketRef.current?.emit("sendMessage", message);
   };
 
+  const muteUser = (userId: number) => {
+    socketRef.current?.emit("onMuteUser", userId);
+  };
+
   const leaveChat = () => {
     socketRef.current?.disconnect();
     localStorage.removeItem("token");
   };
 
-  return { currentUser, messages, sendMessage, users, leaveChat };
+  return { currentUser, messages, sendMessage, users, leaveChat, muteUser };
 };
 
 export default useChat;

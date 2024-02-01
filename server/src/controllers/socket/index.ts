@@ -12,6 +12,10 @@ const getActiveUsersIds = () => {
   return activeUsersSockets.map((aS) => aS.user.userId);
 };
 
+export const getSocketIdByUserId = (userId: number) => {
+  return activeUsersSockets.find((aU) => aU.user.userId === userId)?.socketId;
+};
+
 const socket = async (socket: MySocket) => {
   console.log("User is connected");
   const user = socket.data.user;
@@ -34,17 +38,20 @@ const socket = async (socket: MySocket) => {
   // get user
   usersListener.getUser();
 
+  // get messages
+  messagesListener.getMessages();
+
   // get users (if admin get all, alse get only connected)
   socket.on(
     usersMessages.ON_GET_CONNECTED_USERS,
     usersListener.getUsers(getActiveUsersIds())
   );
 
+  // mute user
+  socket.on(usersMessages.ON_MUTE_USER, usersListener.muteUser);
+
   // send message
   socket.on(messagesMessages.ON_SEND_MESSAGE, messagesListener.sendMessage);
-
-  // get messages
-  messagesListener.getMessages();
 
   socket.on("disconnect", async () => {
     activeUsersSockets = activeUsersSockets.filter(

@@ -1,9 +1,11 @@
 export const usersMessages = {
   ON_GET_USER: "getUser",
   ON_GET_CONNECTED_USERS: "getConnectedUsers",
+  ON_MUTE_USER: "onMuteUser",
 
   EMIT_USER: "user",
   EMIT_CONNECTED_USERS: "connectedUsers",
+  EMIT_USER_MUTED: "userMuted",
 };
 
 export const messagesMessages = {
