@@ -41,7 +41,7 @@ function LoginPage() {
         >
           Button
         </button>
-        {error && <div>{error}</div>}
+        {error && <div className="text-baseRed">{error}</div>}
       </form>
     </div>
   );

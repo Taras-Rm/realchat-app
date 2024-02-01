@@ -9,7 +9,8 @@ module.exports = {
         baseGrey: "#e4e4e7",
         baseGreyDark: "#71717a",
         baseWhite: "#ffffff",
-        baseGreen: "#16a34a"
+        baseGreen: "#16a34a",
+        baseRed: "#dc2626",
       },
     },
   },
