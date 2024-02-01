@@ -11,4 +11,5 @@ export const messagesMessages = {
 
   EMIT_MESSAGE: "message",
   EMIT_MESSAGES: "messages",
+  EMIT_ERROR: "error",
 };

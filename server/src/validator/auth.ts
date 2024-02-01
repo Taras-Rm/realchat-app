@@ -7,7 +7,9 @@ export const loginValidator = validate([
     .notEmpty()
     .withMessage("name is required")
     .isLength({ min: 3, max: 1000 })
-    .withMessage("name must be (min 3, max 1000)"),
+    .withMessage("name must be (min 3, max 1000)")
+    .matches(/^[a-zA-Z0-9]+$/)
+    .withMessage("not allowed character in name"),
   body("password")
     .trim()
     .notEmpty()

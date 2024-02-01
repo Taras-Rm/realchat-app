@@ -24,6 +24,7 @@ export const useChat = (token: string | null) => {
       auth: {
         token: token,
       },
+      transports: ["websocket"],
     });
 
     // get current connected user
@@ -62,8 +63,15 @@ export const useChat = (token: string | null) => {
       navigate(routes.loginPage);
     });
 
+    // on receiving any error
+    socketRef.current.on("error", (error) => {
+      console.log(error)
+    });
+
     return () => {
-      socketRef.current?.disconnect();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
   }, [token]);
 

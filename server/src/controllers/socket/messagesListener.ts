@@ -8,9 +8,17 @@ export class MessagesListener {
   }
 
   sendMessage = async (msg: string) => {
-    const now = new Date();
+    // validate msg
+    const preapredMsg = msg.trim();
+    if (!preapredMsg || preapredMsg.length > 200) {
+      this.socket.emit(
+        messagesMessages.EMIT_ERROR,
+        "Validation error [message]"
+      );
+      return;
+    }
     const message = await messages.createMessage({
-      createdAt: now,
+      createdAt: new Date(),
       userId: this.socket.data.user.userId,
       content: msg,
     });

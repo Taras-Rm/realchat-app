@@ -2,6 +2,7 @@ import ChatMessage from "../../../components/ChatMessage";
 import { ChatMessageType } from "../../../models/message";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
+const MAX_MESSAGE_LENGTH = 200;
 interface ChatMessagesProps {
   messages: ChatMessageType[];
   sendMessage: (message: string) => void;
@@ -12,7 +13,9 @@ function ChatMessages({ messages, sendMessage }: ChatMessagesProps) {
 
   const handleSendMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessage(message);
+    const preparedMessage = message.trim();
+    preparedMessage && sendMessage(preparedMessage);
+    setMessage("");
   };
 
   const columnRef = useRef<HTMLDivElement | null>(null);
@@ -33,9 +36,11 @@ function ChatMessages({ messages, sendMessage }: ChatMessagesProps) {
       </div>
       <form onSubmit={handleSendMessage} className="flex flex-col items-end">
         <textarea
+          maxLength={MAX_MESSAGE_LENGTH}
           onChange={(e) => setMessage(e.target.value)}
           className="p-3 outline-none rounded-lg resize-none my-4 w-full"
           placeholder="Type a message..."
+          value={message}
         />
         <button className="bg-baseBlueLight text-baseWhite w-1/5 text-sm rounded-full px-2 py-1">
           Send
