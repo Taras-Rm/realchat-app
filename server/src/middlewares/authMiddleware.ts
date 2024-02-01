@@ -1,25 +1,27 @@
-import { Socket } from "socket.io";
 import config from "../config/config";
-import { MySocket } from "../interfaces/socket";
+import { MySocket } from "../types/socket";
 import { ExtendedError } from "socket.io/dist/namespace";
-import token from "../services/token";
+import tokenService from "../services/token";
+import users from "../services/users";
 
-export const authMiddleware = (
+export const authMiddleware = async (
   socket: MySocket,
   next: (err?: ExtendedError | undefined) => void
 ) => {
   try {
-    if (!socket.handshake.auth.token) {
+    const token = socket.handshake.auth.token;
+    if (!token) {
       throw new Error("Failed authorization");
     }
-    const userId = token.parseAccessToken(
-      socket.handshake.auth.token,
-      config.token.secret
-    );
-    socket.data.userId = userId;
+    const userId = tokenService.parseAccessToken(token, config.token.secret);
+    const user = await users.findUserById(userId);
+    if (!user) {
+      throw new Error("Failed authorization");
+    }
+    socket.data.user = { userId: user.id, isAdmin: user.isAdmin };
     next();
   } catch (error) {
-    socket.emit("error", "dsdcs")
+    socket.emit("error", "dsdcs");
     console.log("Something went wromg: ", error);
     socket.disconnect();
   }

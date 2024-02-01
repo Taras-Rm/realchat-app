@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { TokenType } from "../interfaces/token";
+import { TokenType } from "../types/token";
 
 function generateAccessToken(id: number, secret: string, etl: string) {
   return jwt.sign({ id }, secret, { expiresIn: etl });

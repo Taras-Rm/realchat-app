@@ -3,7 +3,7 @@ import {
   messagesMessages,
   usersMessages,
 } from "../../constants/socketMessages";
-import { MySocket } from "../../interfaces/socket";
+import { MySocket } from "../../types/socket";
 import messages from "../../services/messages";
 
 export class MessagesListener {
@@ -15,7 +15,7 @@ export class MessagesListener {
     const now = new Date();
     const message = await messages.createMessage({
       createdAt: now,
-      userId: this.socket.data.userId,
+      userId: this.socket.data.user.userId,
       content: msg,
     });
     this.socket.nsp.emit(messagesMessages.EMIT_MESSAGE, message);

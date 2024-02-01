@@ -1,6 +1,6 @@
 import users from "../../services/users";
 import { usersMessages } from "../../constants/socketMessages";
-import { MySocket } from "../../interfaces/socket";
+import { MySocket } from "../../types/socket";
 
 export class UsersListener {
   constructor(private socket: MySocket) {
@@ -8,7 +8,7 @@ export class UsersListener {
   }
 
   getUser = async () => {
-    const user = await users.findUserById(this.socket.data.userId);
+    const user = await users.findUserById(this.socket.data.user.userId);
     this.socket.emit(usersMessages.EMIT_USER, user);
   };
 

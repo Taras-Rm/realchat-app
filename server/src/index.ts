@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import http from "http";
 import { Server } from "socket.io";
 
-import { CustomSocket } from "./interfaces/socket";
+import { CustomSocket } from "./types/socket";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import socket from "./controllers/socket";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
