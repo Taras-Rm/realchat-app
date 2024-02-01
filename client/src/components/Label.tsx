@@ -1,5 +1,3 @@
-import React from "react";
-
 interface LabelProps {
   text: string;
   color: "red" | "green";
@@ -8,7 +6,8 @@ interface LabelProps {
 function Label({ text, color }: LabelProps) {
   return (
     <div
-      className={`p-1 text-xs rounded-full text-[${color}] border-solid border-[1px] border-[${color}]`}
+      className={"py-1 px-2 text-xs rounded-full border-solid border-[1px]"}
+      style={{ color, borderColor: color }}
     >
       {text}
     </div>

@@ -18,7 +18,7 @@ function ChatMessage({ message, isOwn }: ChatMessageProps) {
           isOwn ? "items-end mr-3" : "items-start ml-2"
         } w-full pt-4 space-y-1`}
       >
-        <div className={`text-sm text-[${message.user.nameColor}]`}>
+        <div className={"text-sm"} style={{ color: message.user.nameColor }}>
           {message.user.name}
         </div>
         <div

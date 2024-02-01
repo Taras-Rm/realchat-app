@@ -19,7 +19,9 @@ function ChatUsers({ users, currentUser, leaveChat }: ChatUsers) {
       </div>
       <div className="flex flex-col items-center">
         <img src={avatar} className="w-16" alt="avatar" />
-        <div className="mt-2 mb-1">{currentUser.name}</div>
+        <div className="mt-2 mb-1" style={{ color: currentUser.nameColor }}>
+          {currentUser.name}
+        </div>
         {currentUser.isAdmin && <Label color="red" text="admin" />}
       </div>
       <div className="space-y-2 h-full overflow-y-auto">
