@@ -39,7 +39,7 @@ const socket = async (socket: MySocket) => {
   usersListener.getUser();
 
   // get messages
-  messagesListener.getMessages();
+  socket.on(messagesMessages.ON_GET_MESSAGES, messagesListener.getMessages);
 
   // get users (if admin get all, alse get only connected)
   socket.on(
