@@ -48,7 +48,7 @@ function LoginPage() {
           className="bg-baseBlue text-baseWhite py-1 rounded-sm hover:bg-baseBlueLight"
           disabled={isLoading}
         >
-          Button
+          Login
         </button>
         {error && <div className="text-baseRed">{error}</div>}
       </form>
