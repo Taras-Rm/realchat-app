@@ -29,10 +29,7 @@ module.exports = (
       );
     }
 
-    io.to(rooms.ADMINS).emit(
-      usersMessages.EMIT_USERS,
-      processedUsers
-    );
+    io.to(rooms.ADMINS).emit(usersMessages.EMIT_USERS, processedUsers);
     io.to(rooms.NOT_ADMINS).emit(
       usersMessages.EMIT_USERS,
       processedUsers.filter((u) => u.isOnline)
@@ -61,14 +58,19 @@ module.exports = (
       if (userSocket.user.userId === userId) {
         const socketForDisconnect = socket.nsp.sockets.get(userSocket.socketId);
         socketForDisconnect?.disconnect(true);
-        getUsers(activeUsersSockets.getActiveUsersIds())();
       }
     }
+    getUsers(activeUsersSockets.getActiveUsersIds())();
   };
 
   const banUser = async (userId: number) => {
     await usersService.banUser(userId, true);
     discon(userId)();
+  };
+
+  const unbanUser = async (userId: number) => {
+    await usersService.banUser(userId, false);
+    getUsers(activeUsersSockets.getActiveUsersIds())();
   };
 
   discon(socket.data.user.userId)();
@@ -93,4 +95,6 @@ module.exports = (
   socket.on(usersMessages.EMIT_USER_DISCONNECT, disconnectUser);
   // ban user
   socket.on(usersMessages.ON_BAN_USER, banUser);
+  // unban user
+  socket.on(usersMessages.ON_UNBAN_USER, unbanUser);
 };

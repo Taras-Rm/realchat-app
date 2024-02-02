@@ -15,6 +15,7 @@ function ChatPage() {
     muteUser,
     unmuteUser,
     banUser,
+    unbanUser,
   } = useChat(getToken());
 
   return (
@@ -33,6 +34,7 @@ function ChatPage() {
             muteUser={muteUser}
             unmuteUser={unmuteUser}
             banUser={banUser}
+            unbanUser={unbanUser}
           />
         </div>
       )}

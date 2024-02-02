@@ -5,6 +5,7 @@ export const usersMessages = {
   ON_MUTE_USER: "onMuteUser",
   ON_UNMUTE_USER: "onUnmuteUser",
   ON_BAN_USER: "onBanUser",
+  ON_UNBAN_USER: "onUnbanUser",
 
   EMIT_USER: "user",
   EMIT_USERS: "users",

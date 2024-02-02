@@ -15,6 +15,7 @@ interface ChatUserProps {
   muteUser: (userId: number) => void;
   unmuteUser: (userId: number) => void;
   banUser: (userId: number) => void;
+  unbanUser: (userId: number) => void;
 }
 
 function ChatUser({
@@ -24,6 +25,7 @@ function ChatUser({
   muteUser,
   unmuteUser,
   banUser,
+  unbanUser,
 }: ChatUserProps) {
   const [expandButtons, setExpandButtons] = useState(false);
 
@@ -61,7 +63,7 @@ function ChatUser({
           </button>
         )}
         {user.isBan ? (
-          <button onClick={() => unmuteUser(user.id)}>
+          <button onClick={() => unbanUser(user.id)}>
             <img className="h-4 w-4" src={ban} />
           </button>
         ) : (

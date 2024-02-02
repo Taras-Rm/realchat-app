@@ -12,9 +12,10 @@ interface ChatUsers {
   muteUser: (userId: number) => void
   unmuteUser: (userId: number) => void
   banUser: (userId: number) => void
+  unbanUser: (userId: number) => void
 }
 
-function ChatUsers({ users, currentUser, leaveChat, muteUser, unmuteUser, banUser }: ChatUsers) {
+function ChatUsers({ users, currentUser, leaveChat, muteUser, unmuteUser, banUser, unbanUser }: ChatUsers) {
   return (
     <div className="flex flex-col w-1/3 p-3 pr-0 space-y-3">
       <div className="flex justify-end">
@@ -37,6 +38,7 @@ function ChatUsers({ users, currentUser, leaveChat, muteUser, unmuteUser, banUse
             muteUser={muteUser}
             unmuteUser={unmuteUser}
             banUser={banUser}
+            unbanUser={unbanUser}
           />
         ))}
       </div>
