@@ -32,15 +32,8 @@ module.exports = (
   };
 
   const muteUser = async (userId: number) => {
-    const user = await usersService.muteUnmuteUser(userId, true);
-
+    await usersService.muteUnmuteUser(userId, true);
     io.emit(usersMessages.EMIT_USER_MUTED, userId);
-
-    const socketId = activeUsersSockets.getSocketIdByUserId(userId);
-    if (socketId) {
-      const skt = socket.nsp.sockets.get(socketId);
-      skt?.emit(usersMessages.EMIT_USER, user);
-    }
   };
 
   const disconnectUser = async () => {

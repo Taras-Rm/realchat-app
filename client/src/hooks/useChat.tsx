@@ -27,8 +27,8 @@ export const useChat = (token: string | null) => {
       transports: ["websocket"],
     });
 
-    socketRef.current.emit("getUser");
     // get current connected user
+    socketRef.current.emit("getUser");
     socketRef.current.on("user", (user: UserType) => {
       setCurrentUser(user);
 
@@ -52,17 +52,27 @@ export const useChat = (token: string | null) => {
         };
         setMessages((state) => [...state, newMessage]);
       });
-    });
 
-    // on muted user
-    socketRef.current?.on("userMuted", (userId: number) => {
-      setUsers((users) => {
-        return users.map((u) => {
-          if (u.id === userId) {
-            return { ...u, isMute: true };
-          }
-          return u;
+      // on muted user
+      socketRef.current?.on("userMuted", (userId: number) => {
+        setUsers((users) => {
+          return users.map((u) => {
+            if (u.id === userId) {
+              return { ...u, isMute: true };
+            }
+            return u;
+          });
         });
+
+        if (user.id === userId) {
+          console.log("here");
+          setCurrentUser((state) => {
+            if (state) {
+              return { ...state, isMute: true };
+            }
+            return state;
+          });
+        }
       });
     });
 
