@@ -20,7 +20,7 @@ export const useChat = (token: string | null) => {
     }
 
     // socket connection
-    socketRef.current = io("http://localhost:3001", {
+    socketRef.current = io(`${process.env.REACT_APP_SERVER_URL}`, {
       auth: {
         token: token,
       },
