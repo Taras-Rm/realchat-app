@@ -3,7 +3,7 @@ import ChatUsers from "./components/ChatUsers";
 import useChat from "../../hooks/useChat";
 
 function ChatPage() {
-  const { currentUser, messages, sendMessage, users, leaveChat, muteUser } =
+  const { currentUser, messages, sendMessage, users, leaveChat, muteUser, unmuteUser } =
     useChat(localStorage.getItem("token"));
 
   return (
@@ -20,6 +20,7 @@ function ChatPage() {
             currentUser={currentUser}
             leaveChat={leaveChat}
             muteUser={muteUser}
+            unmuteUser={unmuteUser}
           />
         </div>
       )}

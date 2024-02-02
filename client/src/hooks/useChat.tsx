@@ -63,12 +63,30 @@ export const useChat = (token: string | null) => {
             return u;
           });
         });
-
         if (user.id === userId) {
-          console.log("here");
           setCurrentUser((state) => {
             if (state) {
               return { ...state, isMute: true };
+            }
+            return state;
+          });
+        }
+      });
+
+      // on unmuted user
+      socketRef.current?.on("userUnmuted", (userId: number) => {
+        setUsers((users) => {
+          return users.map((u) => {
+            if (u.id === userId) {
+              return { ...u, isMute: false };
+            }
+            return u;
+          });
+        });
+        if (user.id === userId) {
+          setCurrentUser((state) => {
+            if (state) {
+              return { ...state, isMute: false };
             }
             return state;
           });
@@ -107,12 +125,24 @@ export const useChat = (token: string | null) => {
     socketRef.current?.emit("onMuteUser", userId);
   };
 
+  const unmuteUser = (userId: number) => {
+    socketRef.current?.emit("onUnmuteUser", userId);
+  };
+
   const leaveChat = () => {
     socketRef.current?.disconnect();
     localStorage.removeItem("token");
   };
 
-  return { currentUser, messages, sendMessage, users, leaveChat, muteUser };
+  return {
+    currentUser,
+    messages,
+    sendMessage,
+    users,
+    leaveChat,
+    muteUser,
+    unmuteUser,
+  };
 };
 
 export default useChat;

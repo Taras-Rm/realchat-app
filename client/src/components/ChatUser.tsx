@@ -10,9 +10,16 @@ interface ChatUserProps {
   isOnline: boolean;
   allowToManage: boolean;
   muteUser: (userId: number) => void;
+  unmuteUser: (userId: number) => void;
 }
 
-function ChatUser({ user, isOnline, allowToManage, muteUser }: ChatUserProps) {
+function ChatUser({
+  user,
+  isOnline,
+  allowToManage,
+  muteUser,
+  unmuteUser,
+}: ChatUserProps) {
   const [expandButtons, setExpandButtons] = useState(false);
 
   return (
@@ -39,7 +46,7 @@ function ChatUser({ user, isOnline, allowToManage, muteUser }: ChatUserProps) {
         }}
       >
         {user.isMute ? (
-          <button>
+          <button onClick={() => unmuteUser(user.id)}>
             <img className="h-4 w-4" src={muted} />
           </button>
         ) : (

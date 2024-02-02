@@ -36,6 +36,11 @@ module.exports = (
     io.emit(usersMessages.EMIT_USER_MUTED, userId);
   };
 
+  const unmuteUser = async (userId: number) => {
+    await usersService.muteUnmuteUser(userId, false);
+    io.emit(usersMessages.EMIT_USER_UNMUTED, userId);
+  };
+
   const disconnectUser = async () => {
     activeUsersSockets.deleteByUserId(socket.data.user.userId);
     getUsers(activeUsersSockets.getActiveUsersIds())();
@@ -61,11 +66,17 @@ module.exports = (
     socketId: socket.id,
   });
 
+  // get user
   socket.on(usersMessages.ON_GET_USER, getUser);
+  // get users (active)
   socket.on(
     usersMessages.ON_GET_CONNECTED_USERS,
     getUsers(activeUsersSockets.getActiveUsersIds())
   );
+  // mute user
   socket.on(usersMessages.ON_MUTE_USER, muteUser);
+  // unmute user
+  socket.on(usersMessages.ON_UNMUTE_USER, unmuteUser);
+  // disconnect user
   socket.on(usersMessages.EMIT_USER_DISCONNECT, disconnectUser);
 };
