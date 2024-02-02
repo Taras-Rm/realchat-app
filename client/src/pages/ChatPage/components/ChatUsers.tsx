@@ -1,4 +1,4 @@
-import ChatUser from "../../../components/ChatUser";
+import ChatUser from "./ChatUser";
 import Label from "../../../components/Label";
 import LogoutButton from "../../../components/LogoutButton";
 import { UserDetailsType, UserType } from "../../../models/user";

@@ -41,5 +41,9 @@ export const useLogin = () => {
     }
   };
 
-  return { login, isLoading, error };
+  const getToken = () => {
+    return localStorage.getItem("token")
+  }
+
+  return { login, isLoading, error, getToken };
 };

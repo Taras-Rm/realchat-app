@@ -1,4 +1,4 @@
-import ChatMessage from "../../../components/ChatMessage";
+import ChatMessage from "./ChatMessage";
 import { ChatMessageType } from "../../../models/message";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { UserType } from "../../../models/user";

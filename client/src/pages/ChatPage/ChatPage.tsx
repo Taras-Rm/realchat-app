@@ -1,10 +1,21 @@
 import ChatMessages from "./components/ChatMessages";
 import ChatUsers from "./components/ChatUsers";
 import useChat from "../../hooks/useChat";
+import { useLogin } from "../../hooks/useLogin";
 
 function ChatPage() {
-  const { currentUser, messages, sendMessage, users, leaveChat, muteUser, unmuteUser, banUser } =
-    useChat(localStorage.getItem("token"));
+  const { getToken } = useLogin();
+
+  const {
+    currentUser,
+    messages,
+    sendMessage,
+    users,
+    leaveChat,
+    muteUser,
+    unmuteUser,
+    banUser,
+  } = useChat(getToken());
 
   return (
     <div className="h-screen">

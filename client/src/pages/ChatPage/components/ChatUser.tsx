@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { UserType } from "../models/user";
-import Label from "./Label";
+import { UserType } from "../../../models/user";
+import Label from "../../../components/Label";
 
-const avatar = require("../assets/avatar.png");
-const muted = require("../assets/muted.png");
-const unmuted = require("../assets/unmuted.png");
-const ban = require("../assets/ban.png");
-const unban = require("../assets/unban.png");
+const avatar = require("../../../assets/avatar.png");
+const muted = require("../../../assets/muted.png");
+const unmuted = require("../../../assets/unmuted.png");
+const ban = require("../../../assets/ban.png");
+const unban = require("../../../assets/unban.png");
 
 interface ChatUserProps {
   user: UserType;

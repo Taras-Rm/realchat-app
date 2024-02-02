@@ -1,6 +1,7 @@
-import { ChatMessageType } from "../models/message";
-import { prepareDate } from "../utils/prepareDate";
-const avatar = require("./../assets/avatar.png");
+import { ChatMessageType } from "../../../models/message";
+import { prepareDate } from "../../../utils/prepareDate";
+
+const avatar = require("../../../assets/avatar.png");
 
 interface ChatMessageProps {
   message: ChatMessageType;
