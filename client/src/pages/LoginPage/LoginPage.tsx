@@ -1,13 +1,22 @@
 import { FormEvent, useState } from "react";
 import { useLogin } from "../../hooks/useLogin";
+import { useNavigate } from "react-router-dom";
+import { routes } from "../routes";
 
 function LoginPage() {
+  const navigate = useNavigate();
+
+  const { login, isLoading, error, getToken } = useLogin();
   const [loginFields, setLoginFields] = useState({ name: "", password: "" });
-  const { login, isLoading, error } = useLogin();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     await login(loginFields.name, loginFields.password);
+
+    if (getToken()) {
+      navigate(routes.chatPage);
+    }
   };
 
   return (

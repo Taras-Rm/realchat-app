@@ -19,10 +19,13 @@ export const authMiddleware = async (
     if (!user) {
       throw new Error("Failed authorization");
     }
+    if (user.isBan) {
+      throw new Error("User is banned");
+    }
     socket.data.user = { userId: user.id, isAdmin: user.isAdmin };
     next();
   } catch (error) {
-    socket.emit("error");
+    socket.emit("error", error);
     socket.disconnect();
   }
 };

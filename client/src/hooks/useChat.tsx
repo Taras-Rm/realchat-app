@@ -14,11 +14,6 @@ export const useChat = (token: string | null) => {
   let socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    // if no token go to login
-    if (!token) {
-      navigate(routes.loginPage);
-    }
-
     // socket connection
     socketRef.current = io(`${process.env.REACT_APP_SERVER_URL}`, {
       auth: {
