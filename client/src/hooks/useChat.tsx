@@ -27,6 +27,7 @@ export const useChat = (token: string | null) => {
       transports: ["websocket"],
     });
 
+    socketRef.current.emit("getUser");
     // get current connected user
     socketRef.current.on("user", (user: UserType) => {
       setCurrentUser(user);

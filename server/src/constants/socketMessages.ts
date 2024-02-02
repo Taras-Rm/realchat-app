@@ -6,6 +6,7 @@ export const usersMessages = {
   EMIT_USER: "user",
   EMIT_CONNECTED_USERS: "connectedUsers",
   EMIT_USER_MUTED: "userMuted",
+  EMIT_USER_DISCONNECT: "disconnect",
 };
 
 export const messagesMessages = {
