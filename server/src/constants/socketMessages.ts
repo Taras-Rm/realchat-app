@@ -1,4 +1,5 @@
 export const usersMessages = {
+  ON_CONNECTION: "connection",
   ON_GET_USER: "getUser",
   ON_GET_CONNECTED_USERS: "getConnectedUsers",
   ON_MUTE_USER: "onMuteUser",

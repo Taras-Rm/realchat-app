@@ -10,6 +10,7 @@ import { CustomSocket } from "./types/socket";
 import { authMiddleware } from "./middlewares/authMiddleware";
 import socket from "./controllers/socket";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { usersMessages } from "./constants/socketMessages";
 
 export const prisma = new PrismaClient();
 
@@ -35,7 +36,7 @@ app.use("/api", apiRouter);
 
 io.use(authMiddleware);
 
-io.on("connection", socket);
+io.on(usersMessages.ON_CONNECTION, socket);
 
 const port = config.server.port;
 

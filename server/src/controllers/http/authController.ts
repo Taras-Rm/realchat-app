@@ -17,13 +17,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     // If not exists with such name -> Register new user
     if (!user) {
-      let isAdmin = false;
-
       // First user will be admin
-      const countOfUsers = await usersService.getUsersCount();
-      if (countOfUsers === 0) {
-        isAdmin = true;
-      }
+      const isAdmin = !(await usersService.getUsersCount());
 
       const hashedPassword = await bcrypt.hash(password, config.password.salt);
 

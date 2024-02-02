@@ -44,7 +44,6 @@ module.exports = (
   const disconnectUser = async () => {
     activeUsersSockets.deleteByUserId(socket.data.user.userId);
     getUsers(activeUsersSockets.getActiveUsersIds())();
-    console.log("User is disconnected");
   };
 
   const discon = (userId: number) => () => {
