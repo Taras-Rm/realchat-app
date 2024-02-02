@@ -11,15 +11,14 @@ module.exports = (
 ) => {
   const sendMessage = async (msg: string) => {
     // validate msg
-    const preapredMsg = msg.trim();
-    if (!preapredMsg || preapredMsg.length > 200) {
+    if (!msg || msg.length > 200) {
       socket.emit(messagesMessages.EMIT_ERROR, "Validation error [message]");
       return;
     }
     const message = await messagesService.createMessage({
       createdAt: new Date(),
       userId: socket.data.user.userId,
-      content: preapredMsg,
+      content: msg.trim(),
     });
     io.emit(messagesMessages.EMIT_MESSAGE, message);
   };
