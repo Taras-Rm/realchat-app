@@ -4,6 +4,7 @@ import usersService from "../../services/users";
 import { usersMessages } from "../../constants/socketMessages";
 import { UserDetailsType } from "../../types/user";
 import { ActiveUsersSockets } from "./activeUsersSockets";
+import { rooms } from "../../constants/rooms";
 
 module.exports = (
   io: Server,
@@ -16,7 +17,7 @@ module.exports = (
   };
 
   const getUsers = (usersIds: number[]) => async () => {
-    let dbUsers = await usersService.findUsersByIds(usersIds);
+    let dbUsers = await usersService.getAllUsers();
 
     let processedUsers: UserDetailsType[] = [];
     if (dbUsers?.length) {
@@ -28,7 +29,14 @@ module.exports = (
       );
     }
 
-    io.emit(usersMessages.EMIT_CONNECTED_USERS, processedUsers);
+    io.to(rooms.ADMINS).emit(
+      usersMessages.EMIT_USERS,
+      processedUsers
+    );
+    io.to(rooms.NOT_ADMINS).emit(
+      usersMessages.EMIT_USERS,
+      processedUsers.filter((u) => u.isOnline)
+    );
   };
 
   const muteUser = async (userId: number) => {
@@ -72,9 +80,9 @@ module.exports = (
 
   // get user
   socket.on(usersMessages.ON_GET_USER, getUser);
-  // get users (active)
+  // get users
   socket.on(
-    usersMessages.ON_GET_CONNECTED_USERS,
+    usersMessages.ON_GET_USERS,
     getUsers(activeUsersSockets.getActiveUsersIds())
   );
   // mute user

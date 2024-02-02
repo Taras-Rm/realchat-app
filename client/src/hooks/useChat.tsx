@@ -90,8 +90,8 @@ export const useChat = (token: string | null) => {
     });
 
     // get connected users
-    socketRef.current.emit("getConnectedUsers");
-    socketRef.current.on("connectedUsers", (users) => {
+    socketRef.current.emit("getUsers");
+    socketRef.current.on("users", (users) => {
       setUsers(users);
     });
 

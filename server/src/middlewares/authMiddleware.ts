@@ -3,6 +3,7 @@ import { MySocket } from "../types/socket";
 import { ExtendedError } from "socket.io/dist/namespace";
 import tokenService from "../services/token";
 import users from "../services/users";
+import { rooms } from "../constants/rooms";
 
 export const authMiddleware = async (
   socket: MySocket,
@@ -21,6 +22,12 @@ export const authMiddleware = async (
     }
     if (user.isBan) {
       throw new Error("User is banned");
+    }
+    // define user room
+    if (user?.isAdmin) {
+      socket.join(rooms.ADMINS);
+    } else {
+      socket.join(rooms.NOT_ADMINS);
     }
     socket.data.user = { userId: user.id, isAdmin: user.isAdmin };
     next();
