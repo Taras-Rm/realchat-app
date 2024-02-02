@@ -47,11 +47,11 @@ module.exports = (
     console.log("User is disconnected");
   };
 
-  const discon = () => {
+  const discon = (userId: number) => () => {
     const allUS = activeUsersSockets.getAll();
     for (let i = 0; i < allUS.length; i++) {
       const userSocket = allUS[i];
-      if (userSocket.user.userId === socket.data.user.userId) {
+      if (userSocket.user.userId === userId) {
         const socketForDisconnect = socket.nsp.sockets.get(userSocket.socketId);
         socketForDisconnect?.disconnect(true);
         getUsers(activeUsersSockets.getActiveUsersIds())();
@@ -59,7 +59,12 @@ module.exports = (
     }
   };
 
-  discon();
+  const banUser = async (userId: number) => {
+    await usersService.banUser(userId, true);
+    discon(userId)();
+  };
+
+  discon(socket.data.user.userId)();
 
   activeUsersSockets.add({
     user: socket.data.user,
@@ -79,4 +84,6 @@ module.exports = (
   socket.on(usersMessages.ON_UNMUTE_USER, unmuteUser);
   // disconnect user
   socket.on(usersMessages.EMIT_USER_DISCONNECT, disconnectUser);
+  // ban user
+  socket.on(usersMessages.ON_BAN_USER, banUser);
 };

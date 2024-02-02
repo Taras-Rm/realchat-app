@@ -129,6 +129,10 @@ export const useChat = (token: string | null) => {
     socketRef.current?.emit("onUnmuteUser", userId);
   };
 
+  const banUser = (userId: number) => {
+    socketRef.current?.emit("onBanUser", userId);
+  };
+
   const leaveChat = () => {
     socketRef.current?.disconnect();
     localStorage.removeItem("token");
@@ -142,6 +146,7 @@ export const useChat = (token: string | null) => {
     leaveChat,
     muteUser,
     unmuteUser,
+    banUser,
   };
 };
 

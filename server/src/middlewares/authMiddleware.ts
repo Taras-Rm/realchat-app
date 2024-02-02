@@ -13,16 +13,16 @@ export const authMiddleware = async (
     if (!token) {
       throw new Error("Failed authorization");
     }
-    const userId = tokenService.parseAccessToken(token, config.token.secret);
-    const user = await users.findUserById(userId);
+    const user = await users.findUserById(
+      tokenService.parseAccessToken(token, config.token.secret)
+    );
     if (!user) {
       throw new Error("Failed authorization");
     }
     socket.data.user = { userId: user.id, isAdmin: user.isAdmin };
     next();
   } catch (error) {
-    socket.emit("error", "dsdcs");
-    console.log("Something went wromg: ", error);
+    socket.emit("error");
     socket.disconnect();
   }
 };

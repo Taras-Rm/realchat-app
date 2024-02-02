@@ -74,6 +74,22 @@ const muteUnmuteUser = async (
   return user;
 };
 
+const banUser = async (
+  userId: number,
+  isBan: boolean
+): Promise<User | null> => {
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      isBan,
+    },
+  });
+
+  return user;
+};
+
 export default {
   findUserByName,
   getUsersCount,
@@ -82,4 +98,5 @@ export default {
   getAllUsers,
   findUsersByIds,
   muteUnmuteUser,
+  banUser,
 };

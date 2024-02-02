@@ -35,7 +35,7 @@ function ChatMessages({
 
   return (
     <div className="w-2/3 p-3 bg-baseGrey flex flex-col justify-end">
-      <div ref={columnRef} className="h-full overflow-y-auto">
+      <div ref={columnRef} className="h-full pr-3 overflow-y-auto">
         {messages.map((msg, i) => (
           <ChatMessage key={msg.id} message={msg} isOwn={msg.currentUser} />
         ))}

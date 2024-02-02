@@ -3,6 +3,7 @@ export const usersMessages = {
   ON_GET_CONNECTED_USERS: "getConnectedUsers",
   ON_MUTE_USER: "onMuteUser",
   ON_UNMUTE_USER: "onUnmuteUser",
+  ON_BAN_USER: "onBanUser",
 
   EMIT_USER: "user",
   EMIT_CONNECTED_USERS: "connectedUsers",

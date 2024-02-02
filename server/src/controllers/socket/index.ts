@@ -10,7 +10,6 @@ const socket = async (socket: MySocket) => {
   console.log("User is connected");
 
   registerUsersListener(socket.nsp, socket, activeUsersSockets);
-
   registerMessagesListener(socket.nsp, socket, activeUsersSockets);
 };
 

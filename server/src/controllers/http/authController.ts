@@ -45,6 +45,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
       });
     }
 
+    // Check user banned or not
+    if (user.isBan) {
+      return res.status(401).json({
+        detail: "User is banned",
+      });
+    }
+
     const createToken = token.generateAccessToken(
       user.id,
       config.token.secret,
